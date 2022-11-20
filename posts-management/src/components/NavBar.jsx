@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
+import swal from "sweetalert";
 import {
   getAuth,
   signInWithPopup,
@@ -16,6 +17,7 @@ import {
 import { fireBase } from "../firebase/firebase.config.js";
 import { useNavigate } from "react-router-dom";
 import Loader from "./loader";
+import Alert from "@mui/material/Alert";
 
 export default function NavBar() {
   const auth = getAuth(fireBase);
@@ -40,7 +42,7 @@ export default function NavBar() {
     setLoader(true);
     signOut(auth)
       .then(() => {
-        setLoader(false);
+        swal("Signed out successfully", " ", "success");
         setIsSignedIn(false);
       })
       .catch((err) => {
