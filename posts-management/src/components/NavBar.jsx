@@ -57,7 +57,7 @@ export default function NavBar() {
   }, [isSignedIn]);
 
   return (
-    <Box sx={{ height: "500px" }}>
+    <Box>
       <AppBar
         position="absolute"
         top="0px"
@@ -65,11 +65,15 @@ export default function NavBar() {
         sx={{
           height: 70,
           backgroundColor: "black",
-          padding: "0 2rem",
+          padding: "0 5rem",
         }}
       >
         <Toolbar>
-          <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
+          <Typography
+            variant="h5"
+            component="div"
+            sx={{ flexGrow: 1, fontSize: "2vw" }}
+          >
             Posts Manager
           </Typography>
           <Button
@@ -77,7 +81,11 @@ export default function NavBar() {
             sx={{ textTransform: "none" }}
             color="inherit"
           >
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{ flexGrow: 1, fontSize: "2vw" }}
+            >
               Sign out
             </Typography>
           </Button>

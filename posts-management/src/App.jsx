@@ -16,6 +16,7 @@ function App() {
     const usersRef = collection(db, "users");
     const users = await getDocs(usersRef);
     setUsers(users.docs.map((ele) => ({ ...ele.data(), id: ele.id })));
+    console.log(users);
   };
 
   const handleSignInFlow = () => {

@@ -5,12 +5,19 @@ import NavBar from "./NavBar";
 import Container from "./container";
 import "./Routers.css";
 import SignIn from "./signIn";
+import { useState, createContext, useContext } from "react";
+
+const UserContext = createContext();
 
 export default function Routers() {
+  const [userId, setUserId] = useState("");
+
   return (
-    <Routes>
-      <Route path="/" element={<Container />} />
-      <Route path="signin" element={<SignIn />} />
-    </Routes>
+    <UserContext.Provider value={{ userId, setUserId }}>
+      <Routes>
+        <Route path="/" element={<Container />} />
+        <Route path="signin" element={<SignIn />} />
+      </Routes>
+    </UserContext.Provider>
   );
 }
