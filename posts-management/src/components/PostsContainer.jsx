@@ -9,6 +9,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Modal from "./Model";
+import Typography from "@mui/material/Typography";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -21,7 +22,7 @@ const Item = styled(Paper)(({ theme }) => ({
   boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
 }));
 
-export default function PostsContainer({ posts, deletePost }) {
+export default function PostsContainer({ posts, deletePost, updatePost }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -48,14 +49,29 @@ export default function PostsContainer({ posts, deletePost }) {
               md={3}
               key={index}
               sx={{
-                overflow: "hidden",
-                textOverflow: "ellipsis",
+                boxSizing: "border-box",
+                width: "200px",
+                height: "200px",
+                position: "inherit",
               }}
             >
-              <Item key={ele.id} sx={{ fontSize: "1vw" }}>
-                <h3>Id: {ele.id}</h3>
-                <h3>title: {ele.title}</h3>
-                <h3>body: {ele.body}</h3>
+              <Item
+                key={ele.id}
+                sx={{
+                  fontSize: "1vw",
+                  height: "125px",
+                  overflow: "auto",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "5px",
+                }}
+              >
+                <Typography variant="body1" gutterBottom>
+                  <b>Title : </b> {ele.title}
+                </Typography>
+                <Typography variant="caption" gutterBottom>
+                  <b>Description : </b> {ele.body}
+                </Typography>
                 <Stack direction="row" spacing={6}>
                   <Button
                     variant="contained"
@@ -77,7 +93,12 @@ export default function PostsContainer({ posts, deletePost }) {
                   >
                     Update
                   </Button>
-                  <Modal open={open} setOpen={setOpen} post={ele} />
+                  <Modal
+                    open={open}
+                    setOpen={setOpen}
+                    post={ele}
+                    updatePost={updatePost}
+                  />
                 </Stack>
               </Item>
             </Grid>

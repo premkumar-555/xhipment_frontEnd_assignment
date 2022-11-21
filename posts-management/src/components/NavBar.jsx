@@ -77,6 +77,19 @@ export default function NavBar() {
             Posts Manager
           </Typography>
           <Button
+            onClick={() => {}}
+            sx={{ textTransform: "none" }}
+            color="inherit"
+          >
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{ flexGrow: 3, fontSize: "2vw" }}
+            >
+              Create-Post
+            </Typography>
+          </Button>
+          <Button
             onClick={() => googleSignOut()}
             sx={{ textTransform: "none" }}
             color="inherit"
@@ -86,7 +99,7 @@ export default function NavBar() {
               component="div"
               sx={{ flexGrow: 1, fontSize: "2vw" }}
             >
-              Sign out
+              Sign-out
             </Typography>
           </Button>
         </Toolbar>
