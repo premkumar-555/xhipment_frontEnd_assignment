@@ -6,8 +6,7 @@ import MainContainer from "./container";
 import "./Routers.css";
 import SignIn from "./signIn";
 import { useState, createContext, useContext } from "react";
-
-const UserContext = createContext();
+import UserContext from "./UserContext";
 
 export default function Routers() {
   const [userId, setUserId] = useState("");

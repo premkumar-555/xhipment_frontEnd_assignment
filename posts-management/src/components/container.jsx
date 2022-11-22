@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
+import Typography from "@mui/material/Typography";
 import {
   collection,
   doc,
   setDoc,
+  addDoc,
   getDocs,
   deleteDoc,
   updateDoc,
+  orderBy,
 } from "firebase/firestore";
 import { db } from "../firebase/firebase.config.js";
 import NavBar from "./NavBar";
@@ -37,7 +40,14 @@ export default function MainContainer() {
 
   // update a doc
   const updatePost = async (id, post) => {
+    console.log(id, post);
     await updateDoc(doc(db, "posts", id), post);
+    getPosts();
+  };
+
+  // create new doc
+  const createPost = async (post) => {
+    await addDoc(collection(db, "posts"), post);
     getPosts();
   };
 
@@ -47,7 +57,7 @@ export default function MainContainer() {
 
   return (
     <>
-      <NavBar />
+      <NavBar createPost={createPost} />
       {loader ? (
         <MaterialContainer
           maxWidth="xl"
@@ -63,11 +73,13 @@ export default function MainContainer() {
           <Loader />
         </MaterialContainer>
       ) : (
-        <PostsContainer
-          posts={posts}
-          deletePost={deletePost}
-          updatePost={updatePost}
-        />
+        <>
+          <PostsContainer
+            posts={posts}
+            deletePost={deletePost}
+            updatePost={updatePost}
+          />
+        </>
       )}
     </>
   );

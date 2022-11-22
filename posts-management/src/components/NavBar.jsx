@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -7,6 +7,7 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import swal from "sweetalert";
+import PopupModal from "./Model";
 import {
   getAuth,
   signInWithPopup,
@@ -18,18 +19,21 @@ import { fireBase } from "../firebase/firebase.config.js";
 import { useNavigate } from "react-router-dom";
 import Loader from "./loader";
 import Alert from "@mui/material/Alert";
+import UserContext from "./UserContext";
 
-export default function NavBar() {
+export default function NavBar({ createPost }) {
   const auth = getAuth(fireBase);
   const navigate = useNavigate();
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [showLoader, setLoader] = useState(false);
+  const [open, setOpen] = useState(false);
+  const { userId, setUserId } = useContext(UserContext);
 
   const handleSignInFlow = () => {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log(user.uid);
+        setUserId(user.uid);
         navigate("/");
       } else {
         navigate("/signin");
@@ -77,7 +81,9 @@ export default function NavBar() {
             Posts Manager
           </Typography>
           <Button
-            onClick={() => {}}
+            onClick={() => {
+              setOpen(true);
+            }}
             sx={{ textTransform: "none" }}
             color="inherit"
           >
@@ -104,6 +110,12 @@ export default function NavBar() {
           </Button>
         </Toolbar>
       </AppBar>
+      <PopupModal
+        open={open}
+        setOpen={setOpen}
+        post={{ userId: "", title: "", body: "" }}
+        createPost={createPost}
+      />
     </Box>
   );
 }

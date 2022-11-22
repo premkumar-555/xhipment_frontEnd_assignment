@@ -8,8 +8,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
-import Modal from "./Model";
+import PopupModal from "./Model";
 import Typography from "@mui/material/Typography";
+import ImgMediaCard from "./Card";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -18,12 +19,12 @@ const Item = styled(Paper)(({ theme }) => ({
   textAlign: "center",
   color: theme.palette.text.secondary,
   fontFamily: "sans sarif",
-  border: "1px solid black",
   boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
 }));
 
 export default function PostsContainer({ posts, deletePost, updatePost }) {
   const [open, setOpen] = useState(false);
+  const [inputPost, setInputPost] = useState({});
 
   return (
     <Container
@@ -31,10 +32,12 @@ export default function PostsContainer({ posts, deletePost, updatePost }) {
       sx={{
         position: "relative",
         top: "70px",
-        border: "1px solid black",
         padding: "1rem",
       }}
     >
+      <Typography variant="h4" gutterBottom>
+        Posts
+      </Typography>
       <Box sx={{ flexGrow: 1 }}>
         <Grid
           container
@@ -55,55 +58,23 @@ export default function PostsContainer({ posts, deletePost, updatePost }) {
                 position: "inherit",
               }}
             >
-              <Item
-                key={ele.id}
-                sx={{
-                  fontSize: "1vw",
-                  height: "125px",
-                  overflow: "auto",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "5px",
-                }}
-              >
-                <Typography variant="body1" gutterBottom>
-                  <b>Title : </b> {ele.title}
-                </Typography>
-                <Typography variant="caption" gutterBottom>
-                  <b>Description : </b> {ele.body}
-                </Typography>
-                <Stack direction="row" spacing={6}>
-                  <Button
-                    variant="contained"
-                    color="error"
-                    sx={{ width: "6vw", height: "2vw", fontSize: "1vw" }}
-                    onClick={() => {
-                      deletePost(ele.id);
-                    }}
-                  >
-                    Delete
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      setOpen(true);
-                    }}
-                    color="success"
-                    variant="contained"
-                    sx={{ width: "6vw", height: "2vw", fontSize: "1vw" }}
-                  >
-                    Update
-                  </Button>
-                  <Modal
-                    open={open}
-                    setOpen={setOpen}
-                    post={ele}
-                    updatePost={updatePost}
-                  />
-                </Stack>
-              </Item>
+              <ImgMediaCard
+                open={open}
+                setOpen={setOpen}
+                post={ele}
+                setInputPost={setInputPost}
+                deletePost={deletePost}
+                updatePost={updatePost}
+              />
             </Grid>
           ))}
         </Grid>
+        <PopupModal
+          open={open}
+          setOpen={setOpen}
+          post={{ ...inputPost }}
+          updatePost={updatePost}
+        />
       </Box>
     </Container>
   );

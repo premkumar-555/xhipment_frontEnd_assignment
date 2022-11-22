@@ -3,7 +3,9 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import UserContext from "./UserContext";
+import swal from "sweetalert";
 
 const style = {
   position: "absolute",
@@ -13,14 +15,26 @@ const style = {
   width: 500,
   bgcolor: "background.paper",
   border: "2px solid #000",
-  boxShadow: 24,
   pt: 2,
   px: 4,
   pb: 3,
 };
 
-export default function PopupModal({ open, setOpen, post, updatePost }) {
-  const [formData, setFormData] = useState({ ...post });
+export default function PopupModal({
+  open,
+  setOpen,
+  post,
+  updatePost,
+  createPost,
+}) {
+  const [formData, setFormData] = useState({
+    title: "",
+    body: "",
+    userId: "",
+    created_time: "",
+  });
+  const { userId, setUserId } = useContext(UserContext);
+
   const formStyle = {
     display: "flex",
     flexDirection: "column",
@@ -38,9 +52,14 @@ export default function PopupModal({ open, setOpen, post, updatePost }) {
     setFormData({
       ...formData,
       [id]: value,
+      userId: userId,
     });
-    console.log("post", formData);
   };
+
+  useEffect(() => {
+    setFormData({ ...post });
+    console.log(formData);
+  }, [post]);
 
   return (
     <Modal open={open}>
@@ -89,7 +108,20 @@ export default function PopupModal({ open, setOpen, post, updatePost }) {
             variant="contained"
             sx={{ width: "6vw", height: "2vw", fontSize: "1vw" }}
             onClick={() => {
-              updatePost(formData.id, formData);
+              if (formData.title.length && formData.body.length) {
+                updatePost
+                  ? updatePost(formData.id, formData)
+                  : createPost(formData);
+                setFormData((pre) => {
+                  for (const key in pre) {
+                    pre[key] = "";
+                  }
+                  return pre;
+                });
+                setOpen(false);
+              } else {
+                swal("Please fill all the credentials", " ", "error");
+              }
             }}
           >
             Save
